@@ -5,11 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="format-detection" content="telephone=no">
 <link href="https://fonts.googleapis.com/css?family=Rubik:400,500,700|Roboto:300,400,700" rel="stylesheet" type="text/css">
-<title>Louder · Publicidad en podcast para {{EMPRESA}}</title>
+<title>{{ASUNTO}}</title>
 <!--
   Plantilla Louder basada en Booster (módulos: header, hero, features, 2 columnas,
   sección oscura de 4 columnas, "Great Numbers", carta y footer).
-  Variables que reemplaza n8n:  {{EMPRESA}}  {{CONTACTO}}  {{DESCRIPCION}}  {{CTA_URL}}
+  Variables que reemplaza n8n (los textos los redacta Claude en cada envío):
+  {{ASUNTO}} {{PREHEADER}} {{HERO_TITULO}} {{HERO_SUBTITULO}} {{SALUDO}} {{INTRO}}
+  {{NEGOCIO_TITULO}} {{NEGOCIO_TEXTO}} {{PROPUESTA_TITULO}} {{PROPUESTA_TEXTO}} {{CATEGORIAS}}
+  {{CTA_TEXTO}} {{CTA_URL}} {{CIERRE_TITULO}} {{CIERRE_TEXTO}} {{FIRMA}} {{EMPRESA}}
 -->
 <style type="text/css">
 
@@ -67,7 +70,7 @@ body .header-img img {width: 306px; height: auto;}
 
 <!-- PREHEADER (texto de vista previa en la bandeja) -->
 <div style="display:none; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all;">
-	{{CONTACTO}}, hagamos que {{EMPRESA}} se escuche más fuerte en los podcasts de Latinoamérica.
+	{{PREHEADER}}
 </div>
 
 <!-- ============ HEADER ============ -->
@@ -124,19 +127,19 @@ body .header-img img {width: 306px; height: auto;}
 				<tr><td width="100%" height="60"></td></tr>
 				<tr>
 					<td width="100%" class="rubik" style="text-align: center; font-family: 'Rubik', Arial, sans-serif; color: #FF6FB5; font-size: 13px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;">
-						¡Anúnciate en podcast!
+						Publicidad en podcast · Louder
 					</td>
 				</tr>
 				<tr><td width="100%" height="16"></td></tr>
 				<tr>
 					<td valign="bottom" width="100%" class="rubik mobileheading" style="text-align: center; font-family: 'Rubik', Arial, sans-serif; color: #ffffff; font-size: 40px; line-height: 48px; font-weight: 700;">
-						{{EMPRESA}} tiene algo que decir<span style="font-weight: 400;">... y el mundo merece escucharlo.</span>
+						{{HERO_TITULO}}
 					</td>
 				</tr>
 				<tr><td width="100%" height="22"></td></tr>
 				<tr>
 					<td width="100%" style="text-align: center; font-family: 'Roboto', Arial, sans-serif; color: #E6DDF5; font-size: 16px; line-height: 26px; font-weight: 300;">
-						Desarrollemos juntos tu estrategia de audio en podcast<br>y consigamos el máximo retorno de tu inversión.
+						{{HERO_SUBTITULO}}
 					</td>
 				</tr>
 				<tr><td width="100%" height="40"></td></tr>
@@ -166,8 +169,8 @@ body .header-img img {width: 306px; height: auto;}
 							<tr><td width="100%" height="56"></td></tr>
 							<tr>
 								<td width="100%" style="font-size: 16px; color: #4D4D4D; text-align: left; font-family: 'Roboto', Arial, sans-serif; line-height: 27px; font-weight: 400;">
-									Hola, <strong style="color:#1B2B4B;">{{CONTACTO}}</strong>:<br><br>
-									En Louder conectamos a las marcas con audiencias que escuchan de verdad. Queremos proponerte llevar el mensaje de <strong style="color:#1B2B4B;">{{EMPRESA}}</strong> a los podcasts de Latinoamérica, con anuncios que se escuchan completos, en el momento en que la gente presta más atención.
+									{{SALUDO}}<br><br>
+									{{INTRO}}
 								</td>
 							</tr>
 							<tr><td width="100%" height="56"></td></tr>
@@ -215,7 +218,7 @@ body .header-img img {width: 306px; height: auto;}
 										</tr>
 										<tr><td width="100%" height="12"></td></tr>
 										<tr>
-											<td width="100%" style="text-align: center; font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #6B6F80; line-height: 23px;">Con second screen reimpactamos a quien escuchó el 100% de tu mensaje para llevarlo a tu sitio o tienda.</td>
+											<td width="100%" style="text-align: center; font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #6B6F80; line-height: 23px;">Con second screen reimpactamos a quien escuchó el 100% del anuncio para llevarlo al sitio web o la tienda.</td>
 										</tr>
 										<tr><td width="100%" height="35"></td></tr>
 									</table>
@@ -233,7 +236,7 @@ body .header-img img {width: 306px; height: auto;}
 										</tr>
 										<tr><td width="100%" height="12"></td></tr>
 										<tr>
-											<td width="100%" style="text-align: center; font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #6B6F80; line-height: 23px;">Expertos te acompañan desde la producción del anuncio hasta la medición, para el máximo ROAS.</td>
+											<td width="100%" style="text-align: center; font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #6B6F80; line-height: 23px;">Un equipo experto acompaña desde la producción del anuncio hasta la medición, para el máximo ROAS.</td>
 										</tr>
 										<tr><td width="100%" height="35"></td></tr>
 									</table>
@@ -254,7 +257,7 @@ body .header-img img {width: 306px; height: auto;}
 															<table border="0" cellpadding="0" cellspacing="0" align="left" style="margin-right: 10px;" class="mcenter">
 																<tr>
 																	<td align="center" height="46" bgcolor="#9B3F80" style="border-radius: 12px; padding-left: 28px; padding-right: 28px; font-family: 'Rubik', Arial, sans-serif; color: #ffffff; background-color: #9B3F80; background-image: linear-gradient(90deg, #9B3F80, #C052A8); font-size: 15px; font-weight: 500;">
-																		<a href="{{CTA_URL}}" style="color: #ffffff; text-decoration: none; line-height: 20px;" class="hover">Habla con un experto</a>
+																		<a href="{{CTA_URL}}" style="color: #ffffff; text-decoration: none; line-height: 20px;" class="hover">{{CTA_TEXTO}}</a>
 																	</td>
 																</tr>
 															</table>
@@ -310,15 +313,15 @@ body .header-img img {width: 306px; height: auto;}
 
 									<table width="275" border="0" cellpadding="0" cellspacing="0" align="left" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
 										<tr>
-											<td width="100%" class="rubik" style="font-size: 12px; color: #FF0080; text-align: left; font-family: 'Rubik', Arial, sans-serif; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;">Tu negocio</td>
+											<td width="100%" class="rubik" style="font-size: 12px; color: #FF0080; text-align: left; font-family: 'Rubik', Arial, sans-serif; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;">Lo que vimos</td>
 										</tr>
 										<tr><td width="100%" height="10"></td></tr>
 										<tr>
-											<td width="100%" class="rubik" style="font-size: 24px; color: #3D3D3D; text-align: left; font-family: 'Rubik', Arial, sans-serif; line-height: 30px; font-weight: 700;">Lo que sabemos de {{EMPRESA}}</td>
+											<td width="100%" class="rubik" style="font-size: 24px; color: #3D3D3D; text-align: left; font-family: 'Rubik', Arial, sans-serif; line-height: 30px; font-weight: 700;">{{NEGOCIO_TITULO}}</td>
 										</tr>
 										<tr><td width="100%" height="20"></td></tr>
 										<tr>
-											<td width="100%" style="font-size: 15px; color: #5A5E70; text-align: left; font-family: 'Roboto', Arial, sans-serif; line-height: 25px; font-weight: 400;">{{DESCRIPCION}}</td>
+											<td width="100%" style="font-size: 15px; color: #5A5E70; text-align: left; font-family: 'Roboto', Arial, sans-serif; line-height: 25px; font-weight: 400;">{{NEGOCIO_TEXTO}}</td>
 										</tr>
 										<tr><td width="100%" height="30"></td></tr>
 									</table>
@@ -333,14 +336,16 @@ body .header-img img {width: 306px; height: auto;}
 										</tr>
 										<tr><td width="100%" height="10"></td></tr>
 										<tr>
-											<td width="100%" class="rubik" style="font-size: 24px; color: #3D3D3D; text-align: left; font-family: 'Rubik', Arial, sans-serif; line-height: 30px; font-weight: 700;">Lo que haremos juntos</td>
+											<td width="100%" class="rubik" style="font-size: 24px; color: #3D3D3D; text-align: left; font-family: 'Rubik', Arial, sans-serif; line-height: 30px; font-weight: 700;">{{PROPUESTA_TITULO}}</td>
 										</tr>
 										<tr><td width="100%" height="20"></td></tr>
 										<tr>
 											<td width="100%" style="font-size: 15px; color: #5A5E70; text-align: left; font-family: 'Roboto', Arial, sans-serif; line-height: 25px; font-weight: 400;">
-												Elegimos los podcasts cuya audiencia coincide con los clientes de {{EMPRESA}}, producimos tu anuncio de audio y lo medimos de principio a fin para que cada peso invertido trabaje a tu favor.
+												{{PROPUESTA_TEXTO}}
 											</td>
 										</tr>
+										<tr><td width="100%" height="16"></td></tr>
+										<tr><td width="100%" style="text-align:left; line-height:34px;">{{CATEGORIAS}}</td></tr>
 										<tr><td width="100%" height="30"></td></tr>
 									</table>
 
@@ -369,7 +374,7 @@ body .header-img img {width: 306px; height: auto;}
 							</tr>
 							<tr><td width="100%" height="14"></td></tr>
 							<tr>
-								<td width="100%" style="text-align: center; font-family: 'Roboto', Arial, sans-serif; font-size: 15px; color: #B9C0D6; line-height: 24px; font-weight: 300;">Desde que te conocen hasta que te compran.</td>
+								<td width="100%" style="text-align: center; font-family: 'Roboto', Arial, sans-serif; font-size: 15px; color: #B9C0D6; line-height: 24px; font-weight: 300;">Desde el primer contacto hasta la compra.</td>
 							</tr>
 							<tr><td width="100%" height="40"></td></tr>
 							<tr>
@@ -485,14 +490,13 @@ body .header-img img {width: 306px; height: auto;}
 						<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="full">
 							<tr><td width="100%" height="50"></td></tr>
 							<tr>
-								<td width="100%" class="rubik" style="font-size: 26px; color: #3D3D3D; text-align: left; font-family: 'Rubik', Arial, sans-serif; line-height: 32px; font-weight: 700;">¡Que {{EMPRESA}} se escuche más fuerte!</td>
+								<td width="100%" class="rubik" style="font-size: 26px; color: #3D3D3D; text-align: left; font-family: 'Rubik', Arial, sans-serif; line-height: 32px; font-weight: 700;">{{CIERRE_TITULO}}</td>
 							</tr>
 							<tr><td width="100%" height="20"></td></tr>
 							<tr>
 								<td width="100%" style="font-size: 15px; color: #5A5E70; text-align: left; font-family: 'Roboto', Arial, sans-serif; line-height: 26px; font-weight: 400;">
-									{{CONTACTO}}, nos encantaría mostrarte qué podcasts encajan con tu marca y cuánto alcance puedes lograr. Responde a este correo o agenda una llamada con nuestro equipo y te compartimos una propuesta a la medida.<br><br>
-									¡Gracias por tu tiempo!<br>
-									<strong style="color:#1B2B4B;">Equipo Louder</strong>
+									{{CIERRE_TEXTO}}<br><br>
+									{{FIRMA}}
 								</td>
 							</tr>
 							<tr><td width="100%" height="60"></td></tr>
