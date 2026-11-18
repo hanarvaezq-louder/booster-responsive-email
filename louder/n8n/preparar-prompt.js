@@ -1,8 +1,8 @@
-// ====== Nodo "Preparar prompt para Claude" (n8n Code node) ======
-// Toma los datos del formulario y arma la petición a la API de Claude.
+// ====== Nodo "Preparar prompt para IA" (n8n Code node) ======
+// Toma los datos del formulario y arma la petición a la API de OpenAI.
 // La respuesta llega como JSON con todos los textos del correo (asunto incluido).
 
-const MODELO = 'claude-opus-5-5';
+const MODELO = 'gpt-4o-mini';
 
 // Géneros de la red (la IA elige 3 de esta lista; "Contenido explícito" se muestra pero no se sugiere)
 const GENEROS = ['Sociedad y cultura', 'Educación', 'Artes', 'Salud', 'Noticias', 'Ficción', 'Deportes',
@@ -104,15 +104,15 @@ const schema = {
 
 const body = {
   model: MODELO,
-  max_tokens: 16000,
-  output_config: {
-    effort: 'medium',
-    format: { type: 'json_schema', schema },
+  temperature: 0.6,
+  response_format: {
+    type: 'json_schema',
+    json_schema: { name: 'correo_louder', strict: true, schema },
   },
-  // Si un filtro de seguridad rechazara la petición, la API la reintenta en otro modelo.
-  fallbacks: 'default',
-  system,
-  messages: [{ role: 'user', content: user }],
+  messages: [
+    { role: 'system', content: system },
+    { role: 'user', content: user },
+  ],
 };
 
 return [{ json: { body, datos, generos: GENEROS, correo: campo('Correo del contacto') } }];

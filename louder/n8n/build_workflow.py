@@ -1,13 +1,16 @@
 """Arma el flujo de n8n importable a partir de la plantilla y los nodos de código.
 
 Uso (desde la carpeta del repo):
-    python louder/n8n/build_workflow.py
+    python louder/n8n/build_workflow.py                      -> genera un flujo nuevo
+    python louder/n8n/build_workflow.py "ruta/a/tu-flujo.json" -> actualiza tu flujo exportado
+                                                               (conserva credenciales, IDs y posiciones)
 
 Vuelve a ejecutarlo cada vez que cambies louder/email-louder.html o los .js de esta carpeta,
 e importa de nuevo el JSON generado en n8n.
 """
 import json
 import pathlib
+import sys
 
 AQUI = pathlib.Path(__file__).resolve().parent
 PLANTILLA = (AQUI.parent / "email-louder.html").read_text(encoding="utf-8")
@@ -46,12 +49,12 @@ campos = [
 ]
 
 flujo = {
-    "name": "Louder · Correo personalizado con IA (borrador en Gmail)",
+    "name": "Louder · Correo personalizado con IA (OpenAI, borrador en Gmail)",
     "nodes": [
         {
             "parameters": {
                 "formTitle": "Correo personalizado para un prospecto · Louder",
-                "formDescription": "Completa los datos de la empresa. Claude redacta el correo (asunto incluido) con la plantilla de Louder y queda como borrador en Gmail para que lo revises y lo envíes tú.",
+                "formDescription": "Completa los datos de la empresa. La IA redacta el correo (asunto incluido) con la plantilla de Louder y queda como borrador en Gmail para que lo revises y lo envíes tú.",
                 "formFields": {"values": campos},
                 "options": {
                     "buttonLabel": "Crear borrador",
@@ -72,7 +75,7 @@ flujo = {
         {
             "parameters": {"jsCode": PROMPT_JS},
             "id": "8f0c1f8e-1d2a-4c55-9a0e-6c2f3a1b0002",
-            "name": "Preparar prompt para Claude",
+            "name": "Preparar prompt para IA",
             "type": "n8n-nodes-base.code",
             "typeVersion": 2,
             "position": [260, 300],
@@ -80,23 +83,16 @@ flujo = {
         {
             "parameters": {
                 "method": "POST",
-                "url": "https://api.anthropic.com/v1/messages",
-                "authentication": "predefinedCredentialType",
-                "nodeCredentialType": "anthropicApi",
-                "sendHeaders": True,
-                "headerParameters": {
-                    "parameters": [
-                        {"name": "anthropic-version", "value": "2026-10-21"},
-                        {"name": "anthropic-beta", "value": "server-side-fallback-2026-07-01"},
-                    ]
-                },
+                "url": "https://api.openai.com/v1/chat/completions",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
                 "sendBody": True,
                 "specifyBody": "json",
                 "jsonBody": "={{ JSON.stringify($json.body) }}",
                 "options": {"timeout": 180000},
             },
             "id": "8f0c1f8e-1d2a-4c55-9a0e-6c2f3a1b0003",
-            "name": "Claude redacta el correo",
+            "name": "OpenAI redacta el correo",
             "type": "n8n-nodes-base.httpRequest",
             "typeVersion": 4.2,
             "position": [520, 300],
@@ -126,9 +122,9 @@ flujo = {
         },
     ],
     "connections": {
-        "Formulario Louder": {"main": [[{"node": "Preparar prompt para Claude", "type": "main", "index": 0}]]},
-        "Preparar prompt para Claude": {"main": [[{"node": "Claude redacta el correo", "type": "main", "index": 0}]]},
-        "Claude redacta el correo": {"main": [[{"node": "Construir correo HTML", "type": "main", "index": 0}]]},
+        "Formulario Louder": {"main": [[{"node": "Preparar prompt para IA", "type": "main", "index": 0}]]},
+        "Preparar prompt para IA": {"main": [[{"node": "OpenAI redacta el correo", "type": "main", "index": 0}]]},
+        "OpenAI redacta el correo": {"main": [[{"node": "Construir correo HTML", "type": "main", "index": 0}]]},
         "Construir correo HTML": {"main": [[{"node": "Crear borrador en Gmail", "type": "main", "index": 0}]]},
     },
     "pinData": {},
@@ -137,6 +133,27 @@ flujo = {
     "tags": [],
 }
 
-salida = AQUI / "Louder-correo-personalizado-IA.json"
-salida.write_text(json.dumps(flujo, ensure_ascii=False, indent=2), encoding="utf-8")
-print("Flujo generado:", salida)
+if len(sys.argv) > 1:
+    # Actualizar un flujo exportado de n8n: solo cambia el código y los campos del formulario.
+    origen = pathlib.Path(sys.argv[1])
+    existente = json.loads(origen.read_text(encoding="utf-8"))
+    nuevos = {n["name"]: n for n in flujo["nodes"]}
+    cambiados = []
+    for nodo in existente["nodes"]:
+        if nodo["name"] in ("Preparar prompt para IA", "Construir correo HTML"):
+            nodo["parameters"]["jsCode"] = nuevos[nodo["name"]]["parameters"]["jsCode"]
+            cambiados.append(nodo["name"])
+        elif nodo["type"] == "n8n-nodes-base.formTrigger":
+            nodo["parameters"]["formFields"] = nuevos["Formulario Louder"]["parameters"]["formFields"]
+            cambiados.append(nodo["name"])
+    faltan = {"Preparar prompt para IA", "Construir correo HTML"} - set(cambiados)
+    if faltan:
+        sys.exit("No encontré estos nodos en tu flujo: " + ", ".join(sorted(faltan)))
+    salida = AQUI / (origen.stem + " (actualizado).json")
+    salida.write_text(json.dumps(existente, ensure_ascii=False, indent=2), encoding="utf-8")
+    print("Nodos actualizados:", ", ".join(cambiados))
+    print("Flujo actualizado:", salida)
+else:
+    salida = AQUI / "Louder-correo-personalizado-IA.json"
+    salida.write_text(json.dumps(flujo, ensure_ascii=False, indent=2), encoding="utf-8")
+    print("Flujo generado:", salida)

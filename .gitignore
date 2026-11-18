@@ -2,3 +2,5 @@
 **/Purchase Code.txt
 __MACOSX/
 .DS_Store
+# Flujos exportados de n8n (traen IDs de credenciales)
+louder/n8n/*(actualizado).json

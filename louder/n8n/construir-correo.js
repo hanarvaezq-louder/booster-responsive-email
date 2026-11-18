@@ -1,5 +1,5 @@
 // ====== Nodo "Construir correo HTML" (n8n Code node) ======
-// Lee los textos que redactó Claude y los pone dentro de la plantilla de Louder.
+// Lee los textos que redactó la IA y los pone dentro de la plantilla de Louder.
 
 // ---- CONFIGURACIÓN (edita aquí) ----
 const CTA_URL     = 'https://louder.fm/';   // destino de los botones: WhatsApp, Calendly o formulario
@@ -8,20 +8,19 @@ const FIRMA_EQUIPO = 'Equipo Louder';       // se usa si el formulario no trae n
 
 const PLANTILLA = __PLANTILLA_HTML__;
 
-const prep = $('Preparar prompt para Claude').first().json;
+const prep = $('Preparar prompt para IA').first().json;
 const form = $('Formulario Louder').first().json;
 const r = $input.first().json;
 
-// 1) Validar la respuesta de la API
-if (r.stop_reason === 'refusal') {
-  throw new Error('Claude no redactó el correo (refusal): ' + JSON.stringify(r.stop_details || {}));
-}
-if (r.stop_reason === 'max_tokens') {
-  throw new Error('La respuesta de Claude se cortó por max_tokens; vuelve a enviar el formulario.');
-}
-const bloque = (r.content || []).find(b => b.type === 'text');
-if (!bloque) throw new Error('La respuesta de Claude no trae texto: ' + JSON.stringify(r).slice(0, 500));
-const t = JSON.parse(bloque.text);
+// 1) Validar la respuesta de OpenAI
+if (r.error) throw new Error('Error de OpenAI: ' + JSON.stringify(r.error));
+const choice = (r.choices || [])[0];
+if (!choice) throw new Error('La respuesta de OpenAI no trae choices: ' + JSON.stringify(r).slice(0, 500));
+if (choice.message?.refusal) throw new Error('La IA no redactó el correo: ' + choice.message.refusal);
+if (choice.finish_reason === 'length') throw new Error('La respuesta se cortó por longitud; vuelve a enviar el formulario.');
+let t;
+try { t = JSON.parse(choice.message.content); }
+catch (e) { throw new Error('La IA no devolvió JSON válido: ' + choice.message.content); }
 
 // 2) Utilidades
 const esc = s => String(s ?? '')
